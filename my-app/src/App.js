@@ -624,7 +624,7 @@ ClickSearchType=(type)=>{
     
    adminRightClick=(data,type,e)=>{
         e.preventDefault();
-        if(this.state.actiontype=='Delete')
+        if(this.state.actiontype=='Delete'&&confirm("Do you want to delete this stop?")==true)
       { 
           if(type=='user')
         {
