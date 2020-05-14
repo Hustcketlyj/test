@@ -166,11 +166,21 @@ class Project extends React.Component
                         });}
 	   
      //console.log(data);
-   
+   $.ajax({type:'GET',url:"http://csci2720.cse.cuhk.edu.hk/2011/getdata",async :false,
+        success:(res)=>{ 
+           
+            var x=res.filter(function(value) {if (value.latitude==null||value.arrival.length==0)return false; return true;})
+          
+            this.setState({data:x, filteredDatas:x,showdata:x}) 
+            
+            } 
+        
+        
+        })
 			
    }
 componentDidMount(){
-  //  $.ajax({type:'GET',url:"http://csci2720.cse.cuhk.edu.hk/2011/getdata",success:(res)=>{this.setState({data:res, filteredDatas:res}) } });
+  /* $.ajax({type:'GET',url:"http://csci2720.cse.cuhk.edu.hk/2011/getdata",success:(res)=>{this.setState({data:res, filteredDatas:res}) } });
        $.ajax({type:'GET',url:"http://csci2720.cse.cuhk.edu.hk/2011/getdata",async :false,
         success:(res)=>{ 
            
@@ -181,7 +191,7 @@ componentDidMount(){
             } 
         
         
-        })
+        })*/
 	
 	// console.log(this.state.data);
     for(let index in this.state.data){
@@ -991,7 +1001,7 @@ else
 		</nav>
         <AdminStopInfo onContextMenu={this.adminRightClick}actiondelete={this.actiondelete}addstop={this.addstop}showuser={this.state.showuser} Serchtype={this.state.Searchtype} data={this.state.filteredDatas} IdSort={this.IdSort} RouteSort={this.RouteSort} NameSort={this.NameSort} LatitudeSort={this.LatitudeSort} LongitudeSort={this.LongitudeSort}/>
         
-        <Userlist  onContextMenu={this.adminRightClick}actiondelete={this.actiondelete}addUser={this.addUser}showuser={this.state.showuser} user={this.state.user}/>
+        <UserList  onContextMenu={this.adminRightClick}actiondelete={this.actiondelete}addUser={this.addUser}showuser={this.state.showuser} user={this.state.user}/>
 </ div>        
         )
   ///////////////////////////////////      
@@ -1126,7 +1136,7 @@ class AdminTablerow extends React.Component{
     }
     }
     
-class Userlist extends React.Component{
+class UserList extends React.Component{
     
     render(){
         console.log(this.props.showuser)
