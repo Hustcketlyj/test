@@ -51,7 +51,64 @@ class Map extends React.Component{
 }
 const WrappedMap =withScriptjs(withGoogleMap(Map));
 /* eslint-disable */
-   
+class Userchart extends React.Component{
+  render(){
+    if(this.props.showornot===true&&this.props.showornot1===false){
+      return(
+        <div className="barchart" style={{width:'100vw', height:'50vh',display:'inline-block'}}>
+        <div><Bar style={{width:'50vw', height:'50vh',display:'inline-block'}}
+       data={this.props.chartData}
+       options={{
+         maintainAspectRatio:false,
+         scales: {
+                   yAxes: [{
+                      ticks: {
+                      beginAtZero: true,
+                       min: 0
+                     }    
+                   }]
+                 },
+          title:{
+          display:true,
+          text:"Top 5 STOPS with the most comments"
+        },
+        legend:{
+          display:"true",
+          position:"right"
+        }
+       }}
+       /></div>
+         <div><Bar style={{width:'50vw', height:'50vh',display:'inline-block'}}
+       data={this.props.chartData1}
+       options={{
+         maintainAspectRatio:false,
+         scales: {
+                   yAxes: [{
+                      ticks: {
+                      beginAtZero: true,
+                       min: 0
+                     }    
+                   }]
+                 },
+          title:{
+          display:true,
+          text:"Top 5 STOPS with the most routes"
+        },
+        legend:{
+          display:"true",
+          position:"right"
+        }
+       }}
+       /></div>
+       
+       </div>
+      );
+    }
+    else{
+      return null;
+    }
+  }
+}   
     var alldata;
 class Project extends React.Component
 {
@@ -919,51 +976,10 @@ DistanceSort=()=>{
           zoom={this.state.zoom}
           />
         </div>
-        <div className="barchart" style={{width:'50vw', height:'100vh',display:'inline-block'}}>
-  <Bar 
-data={this.state.chartData}
-options={{
-  maintainAspectRatio:false,
-  scales: {
-            yAxes: [{
-               ticks: {
-               beginAtZero: true,
-                min: 0
-              }    
-            }]
-          },
-   title:{
-   display:true,
-   text:"Top 5 STOPS with the most comments"
- },
- legend:{
-   display:"true",
-   position:"right"
- }
-}}
-/>
-<Bar 
-data={this.state.chartData1}
-options={{
-  maintainAspectRatio:false,
-  scales: {
-            yAxes: [{
-               ticks: {
-               beginAtZero: true,
-                min: 0
-              }    
-            }]
-          },
-   title:{
-   display:true,
-   text:"Top 5 STOPS with the most routes"
- },
- legend:{
-   display:"true",
-   position:"right"
- }
-}}
-/>
+        <div>
+ <Userchart chartData={this.state.chartData} chartData1={this.state.chartData1} showornot={this.state.Loginout} showornot1={this.state.detailmap}
+ />
+
 </div>
         <StopInfo DistanceSort={this.DistanceSort}showfavorite={this.state.showfavorite} handleRightClick={this.handleRightClick} Loginout={this.state.Loginout}  showdetail={this.state.showdetail}Serchtype={this.state.Searchtype} data={this.state.filteredDatas} IdSort={this.IdSort} RouteSort={this.RouteSort} NameSort={this.NameSort} LatitudeSort={this.LatitudeSort} LongitudeSort={this.LongitudeSort} distanceall={this.state.distanceall}
         UserLoc={this.state.UserLoc} CenterLoc={this.state.CenterLoc } showdata={this.state.showdata} maplistener={this.maplistener} markerClick={this.mapright} showall={this.showAll} CenterName={this.state.CenterName}
