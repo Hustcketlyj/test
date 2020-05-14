@@ -104,7 +104,7 @@ class Project extends React.Component
 componentDidMount(){
 
 
-    $.ajax({type:'GET',url:"http://localhost:3000/getdata",success:(res)=>{this.setState({data:res, filteredDatas:res}) } });
+    $.ajax({type:'GET',url:"http://csci2720.cse.cuhk.edu.hk/2011/getdata",success:(res)=>{this.setState({data:res, filteredDatas:res}) } });
    // console.log(this.state.data);
     for(let index in this.state.data){
       var lat1=this.state.data[index].latitude;
@@ -156,7 +156,7 @@ componentDidMount(){
                                        num++;
                                        if (num==229){
                                           $.ajax({
-                              url:'http://localhost:3000/data',
+                              url:'http://csci2720.cse.cuhk.edu.hk/2011/data',
                               type:"POST",
                               data:{alldata:alldata},
                               success:function(re){
@@ -309,7 +309,7 @@ ClickSearchType=(type)=>{
    handleLogin=(name, password)=>{
         if (name.length>=4&&name.length<=20&&password.length>=4&&password.length<=20)
         {
-            $.ajax({type:'POST', data:{username:name, pwd:password}, url:"http://localhost:3000/login" ,success:(res)=>{
+            $.ajax({type:'POST', data:{username:name, pwd:password}, url:"http://csci2720.cse.cuhk.edu.hk/2011/login" ,success:(res)=>{
                     if (res.login)
                 {    
                     alert ("Log in succeed !");
@@ -338,7 +338,7 @@ ClickSearchType=(type)=>{
     handleSign=(name, password)=>{
         if (name.length>=4&&name.length<=20&&password.length>=4&&password.length<=20)
         {
-            $.ajax({type:'POST', data:{username:name, pwd:password}, url:"http://localhost:3000/signup" ,success:function(res){
+            $.ajax({type:'POST', data:{username:name, pwd:password}, url:"http://csci2720.cse.cuhk.edu.hk/2011/signup" ,success:function(res){
                     if (res.signup)
                     alert ("Sign up succeed !");
                     else
@@ -371,7 +371,7 @@ ClickSearchType=(type)=>{
     {
         if (confirm ("Do you want to log out?"))
      {             
-         $.ajax({type:'POST', data:{}, url:"http://localhost:3000/logout" ,success:function(res){
+         $.ajax({type:'POST', data:{}, url:"http://csci2720.cse.cuhk.edu.hk/2011/logout" ,success:function(res){
                     if (res.logout)
                     alert ("Log out succeed !");
                   //  else
@@ -408,12 +408,12 @@ ClickSignUp=()=>{
 ClickFavorite=()=>{
         
 $.ajax({
-    type:'GET',url:"http://localhost:3000/favourite",async:false,
+    type:'GET',url:"http://csci2720.cse.cuhk.edu.hk/2011/favourite",async:false,
           success:(res)=>{
              var favorite=[];
               res.forEach((value, index, array)=>{
                   
-                  $.ajax({type:'GET',url:"http://localhost:3000/stop/"+value,async:false,
+                  $.ajax({type:'GET',url:"http://csci2720.cse.cuhk.edu.hk/2011/stop/"+value,async:false,
                       success:(stop)=>{
                           favorite.push(stop);
                           }
@@ -430,7 +430,7 @@ $.ajax({
 	DeleteFavorite=(stopname)=>{
         
 $.ajax({type:'delete',
-    url:"http://localhost:3000/favourite/"+stopname,
+    url:"http://csci2720.cse.cuhk.edu.hk/2011/favourite/"+stopname,
     success:()=>{
         }
     })
@@ -443,10 +443,10 @@ addComment=(stopname,e)=>{
     var body= prompt("Please enter the content", "good stop");
     var comment={ body: body, username: this.state.name, date: Date() }
     $.ajax({type:'POST',data:comment,
-        url:"http://localhost:3000/stop/"+stopname,
+        url:"http://csci2720.cse.cuhk.edu.hk/2011/stop/"+stopname,
 	    	async:false,
         success:()=>{alert("comment added");
-            $.ajax({type:'GET',url:"http://localhost:3000/getdata",async:false,success:(res)=>{
+            $.ajax({type:'GET',url:"http://csci2720.cse.cuhk.edu.hk/2011/getdata",async:false,success:(res)=>{
               var newdetail=this.state.detailstop;
               newdetail.comment.push(comment);
             this.setState({data:res, filteredDatas:res,detailstop:newdetail
@@ -860,7 +860,7 @@ class ActivityItem extends React.Component{
 class Detail extends React.Component{
     
 addfavorite=()=>{
-    $.ajax({type:'PUT',url:"http://localhost:3000/favourite/"+this.props.detailstop.name,
+    $.ajax({type:'PUT',url:"http://csci2720.cse.cuhk.edu.hk/2011/favourite/"+this.props.detailstop.name,
         success:(res)=>{alert("adding finished")}}
     
     )}
