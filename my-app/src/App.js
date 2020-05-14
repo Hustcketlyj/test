@@ -115,20 +115,6 @@ class Project extends React.Component
         }
     }
     componentWillMount(){
-      $.ajax({
-       url:'http://csci2720.cse.cuhk.edu.hk/2011/getdata',
-       type:'GET',
-       async :false, 
-       success:function(stops){
-       //console.log(stops);//done!
-       data=stops;
-       }
-     });
-     //console.log(data);
-     this.setState({
-     data:data,
-     showdata:data
-     });  
 	    const routeline=['1','10','592','102P','103','90','118','117','12A','70'];
         var num;
 
@@ -174,6 +160,20 @@ class Project extends React.Component
                                          }
          
                         });}
+	    $.ajax({
+       url:'http://csci2720.cse.cuhk.edu.hk/2011/getdata',
+       type:'GET',
+       async :false, 
+       success:function(stops){
+       //console.log(stops);//done!
+       data=stops;
+       }
+     });
+     //console.log(data);
+     this.setState({
+     data:data,
+     showdata:data
+     });  
 			
    }
 componentDidMount(){
