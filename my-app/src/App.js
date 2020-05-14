@@ -73,6 +73,10 @@ class Project extends React.Component
                       detailstop:null,
                       showfavorite:false,
                       favoritestop:null,
+			admin:false,
+                      user:null,
+                      showuser:false,
+                      actiontype:'Delete',
                      // below for map
                       UserLoc:userloc,
                       CenterLoc:centerloc,
@@ -532,6 +536,78 @@ ClickSearchType=(type)=>{
         }
         
         }
+    ///////////////////////////////////////////////////for admin 链接还没改
+    adminlog=()=>{
+    this.test();
+     $.ajax({type:'post',url:"http://localhost:3000/adminLogIn",success:(res)=>{this.setState({admin:true}) } })
+    $.ajax({type:'GET',url:"http://localhost:3000/user",success:(res)=>{this.setState({user:res}) } })
+
+    }    
+    
+    addUser=()=>{
+
+    var username=prompt("Please enter the username", "someone");
+    var pwd=prompt("Please enter the password", "1111");
+    var favourite=prompt("Please enter the favourite", "sleep");
+   if (username!=null&&pwd!=null&&favourite!=null)
+   $.ajax({
+        type:'post',
+        url:"http://localhost:3000/user",
+        data:{username:username,pwd:pwd,favourite:favourite},
+        success:(res)=>{
+            $.ajax({type:'GET',
+                url:"http://localhost:3000/user",
+                success:(res)=>{
+                    this.setState({user:res}) ;
+                    } 
+               } )
+          }
+            
+    })
+}
+    actiondelete=()=>{
+    
+    this.setState({actiontype:'Delete'})
+    }
+    
+    addstop=()=>{
+        var stopId=prompt("Please enter the stopid", "111111")
+    var name=prompt("Please enter the stopname", "someplace");
+    var latitude=prompt("Please enter the latitude", "11");
+    var longitude=prompt("Please enter the longitude", "11");
+   if (stopId!=null&&name!=null&&latitude!=null&&longitude!=null)
+   $.ajax({
+        type:'post',
+        url:"http://localhost:3000/stop",
+        data:{stopId:stopId,name:name,latitude:latitude,longitude:longitude},
+        success:(res)=>{
+         alert("added successfully");
+          }
+            
+    })
+}
+    
+    ClickUser=()=>{
+    
+  
+    $.ajax({type:'GET',url:"http://localhost:3000/user",success:(res)=>{this.setState({user:res,showuser:true}) } })
+    }
+    ClickStop=()=>{
+   
+   $.ajax({type:'GET',url:"http://localhost:3000/getdata",
+        success:(res)=>{ 
+           
+            var x=res.filter(function(value) {if (value.latitude==null||value.arrival.length==0)return false; return true;})
+         
+            this.setState({data:x, filteredDatas:x,showuser:false}) 
+            
+            } 
+        
+        
+        })
+  
+    }
+    ////////////////////////////////////////////////////////////////////////////
 
 ClickSignUp=()=>{
     if (this.state.showSign)
