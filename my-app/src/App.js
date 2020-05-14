@@ -52,7 +52,7 @@ class Map extends React.Component{
 const WrappedMap =withScriptjs(withGoogleMap(Map));
 /* eslint-disable */
    
-    var data;
+    var alldata;
 class Project extends React.Component
 {
 
