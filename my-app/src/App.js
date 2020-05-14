@@ -860,8 +860,9 @@ DistanceSort=()=>{
           
         }
     //新加了一句，只要不点按钮，admin一直是false，就是原界面
-    if (this.state.admin==false)
+    
     render(){
+	if (this.state.admin==false)
         return(
         	// navigation bar 
             <div>
