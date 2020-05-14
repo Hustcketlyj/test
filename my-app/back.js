@@ -16,7 +16,7 @@ app.use(session({
 app.use(express.static('content'));
 
 /* connect to mongodb */
-var mongodb = "mongodb://hnchen9:x98957@localhost/csci2720";
+var mongodb = "mongodb://127.0.0.1:27017/?authSource=hnchen9&compressors=disabled&gssapiServiceName=mongodb";
 mongoose.set('useCreateIndex', true);
 mongoose.connect(mongodb, { useNewUrlParser: true });
 var db = mongoose.connection;
