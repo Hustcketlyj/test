@@ -66,7 +66,7 @@ class Project extends React.Component
                     showlog:false,
                       Searchtext:'',
                       showSign:false,
-                      data:alldata,
+                      data:null,
                       Searchtype:'Criteria',
                       filteredDatas:null,
                       showdetail:false,
@@ -82,7 +82,7 @@ class Project extends React.Component
                       CenterLoc:centerloc,
                       //data:data,
                       CenterName:'DEFAULT',
-                     showdata:alldata,//showdata for map marker
+                     showdata:null,//showdata for map marker
                      distanceall:null,
                      zoom:18,
                      detailmap:false,
@@ -125,9 +125,7 @@ class Project extends React.Component
                 alldata=[];
                 num=0;
                 for(let index1 in routeline){
-                    
-
-                   $.ajax({
+                  $.ajax({
                       url:"https://rt.data.gov.hk/v1/transport/citybus-nwfb/route-stop/ctb/"+routeline[index1]+"/inbound",
                       type:'GET',
                       
@@ -173,7 +171,7 @@ class Project extends React.Component
    }
 componentDidMount(){
   //  $.ajax({type:'GET',url:"http://csci2720.cse.cuhk.edu.hk/2011/getdata",success:(res)=>{this.setState({data:res, filteredDatas:res}) } });
-       $.ajax({type:'GET',url:"http://csci2720.cse.cuhk.edu.hk/2011/getdata",
+       $.ajax({type:'GET',url:"http://csci2720.cse.cuhk.edu.hk/2011/getdata",async :false,
         success:(res)=>{ 
            
             var x=res.filter(function(value) {if (value.latitude==null||value.arrival.length==0)return false; return true;})
@@ -206,20 +204,20 @@ componentDidMount(){
        distanceall:distancedata
      });
      var temp=this.state.data;
-     var compare=function(x,y){
-       if(x.comment.length>y.comment.length){
-         return -1;
-       }else{
-         return 0;
-       }
-     }
-     var temp1=this.state.data;
+var temp1=this.state.data;
      var compare1=function(x,y){
       if(x.arrival.length>y.arrival.length){
         return -1;
       }else{
         return 0;
       }
+     }
+     var compare=function(x,y){
+       if(x.comment.length>y.comment.length){
+         return -1;
+       }else{
+         return 0;
+       }
      }
      temp1=temp1.sort(compare1);
      temp=temp.sort(compare);
@@ -624,7 +622,7 @@ ClickSearchType=(type)=>{
     
    adminRightClick=(data,type,e)=>{
         e.preventDefault();
-        if(this.state.actiontype=='Delete'&&confirm("Do you want to delete this stop?")==true)
+        if(this.state.actiontype=='Delete')
       { 
           if(type=='user')
         {
