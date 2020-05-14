@@ -294,7 +294,10 @@ app.post('/adminLogIn', (req, res) => {
 
 /* admin log out */
 /* same as user */
-
+app.post('/adminLogOut', (req, res) => {
+	req.session.admin = false;
+	res.send({ 'login': 0});
+});
 /* admin delete a user */
 app.delete('/user/:username', (req, res) => {
 	if(req.session.admin != undefined) {
@@ -314,7 +317,7 @@ app.delete('/user/:username', (req, res) => {
 /* admin delete a bus stop */
 app.delete('/stop/:stopname', (req, res) => {
 	if(req.session.admin != undefined) {
-		User.remove({ stopname: req.params.stopname}, (err, result) => {
+		Stop.remove({ name: req.params.stopname}, (err, result) => {
 			if(err)
 				return console.log(err);
 			if(result.deletedCount == 0)
@@ -326,7 +329,18 @@ app.delete('/stop/:stopname', (req, res) => {
 		res.send({ 'authority': 0 });
 	}
 });
-
+/* add location */
+app.post('/stop', (req, res) => {
+	var stop = new Stop({
+	
+	latitude:  req.body.latitude ,
+	longitude: req.body.longitude ,
+	name: req.body.name ,
+	comment:[],
+	arrival:[{stopId: req.body.stopId,route:'###'}]
+});
+		stop.save();
+});
 /* admin get all bus stop */
 app.get('/stop', (req, res) => {
 	if(req.session.admin != undefined || req.session.username != undefined) {
@@ -341,7 +355,7 @@ app.get('/stop', (req, res) => {
 	
 });
 
-/* for test only */
+/* for test only 
 app.post('/stop', (req, res) => {
 	StopModel.create({stopname: "test", longtitude: 50, latitude: 30, 
 		arrival: [{route: "route1", time: "2020-01-01"}, {route: "route2", time: "2020-01-01"}],
@@ -351,9 +365,9 @@ app.post('/stop', (req, res) => {
 		res.send({"created": 1});
 	});
 });
-
+*/
 /* flush stop data */
-/* flush stop data */
+/* flush stop data 
 app.post('/flush/stop', (req, res) => {
 	if(req.session.admin) {
 		StopModel.find({}, (err, result) => {
@@ -387,9 +401,9 @@ app.post('/flush/stop', (req, res) => {
 	} else {
 		res.send({ 'admin': false });
 	}
-})
+})*/
 
-/* flush arrival time */
+/* flush arrival time 
 app.post('/flush/arrival', (req, res) => {
 	if(req.session.admin) {
 		ArrivalModel.create(req.body.arrival, (err, arrivals) => {
@@ -404,17 +418,24 @@ app.post('/flush/arrival', (req, res) => {
 	} else {
 		res.send({ 'admin': false });
 	}
+})*/
+//add user
+app.post('/user', (req, res) => {
+	var user = new User({
+	username: req.body.username ,
+	pwd:  req.body.pwd ,
+	favourite: req.body.favourite 
+});
+		user.save();
+	
 })
-
 /* get all users */
 app.get('/user', (req, res) => {
-	if(req.session.admin) {
-		UserModel.find({}, ['username', 'comment', 'favourite'], (err, result) => {
+	
+		User.find({}, (err, result) => {
 			res.send(result);
 		})
-	} else {
-		res.send({'admin': false});
-	}
+	
 })
 
 app.listen(2011);
