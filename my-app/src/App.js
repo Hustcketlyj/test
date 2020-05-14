@@ -66,7 +66,7 @@ class Project extends React.Component
                     showlog:false,
                       Searchtext:'',
                       showSign:false,
-                      data:data,
+                      data:alldata,
                       Searchtype:'Criteria',
                       filteredDatas:null,
                       showdetail:false,
@@ -78,7 +78,7 @@ class Project extends React.Component
                       CenterLoc:centerloc,
                       //data:data,
                       CenterName:'DEFAULT',
-                     showdata:data,//showdata for map marker
+                     showdata:alldata,//showdata for map marker
                      distanceall:null,
                      zoom:18,
                      detailmap:false,
