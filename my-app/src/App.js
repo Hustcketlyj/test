@@ -166,10 +166,11 @@ class Project extends React.Component
                         });}
 	   
      //console.log(data);
+	    var x;
    $.ajax({type:'GET',url:"http://csci2720.cse.cuhk.edu.hk/2011/getdata",async :false,
         success:(res)=>{ 
            
-            var x=res.filter(function(value) {if (value.latitude==null||value.arrival.length==0)return false; return true;})
+             x=res.filter(function(value) {if (value.latitude==null||value.arrival.length==0)return false; return true;})
           
             this.setState({data:x, filteredDatas:x,showdata:x}) 
             
@@ -177,27 +178,11 @@ class Project extends React.Component
         
         
         })
-			
-   }
-componentDidMount(){
-  /* $.ajax({type:'GET',url:"http://csci2720.cse.cuhk.edu.hk/2011/getdata",success:(res)=>{this.setState({data:res, filteredDatas:res}) } });
-       $.ajax({type:'GET',url:"http://csci2720.cse.cuhk.edu.hk/2011/getdata",async :false,
-        success:(res)=>{ 
-           
-            var x=res.filter(function(value) {if (value.latitude==null||value.arrival.length==0)return false; return true;})
-          
-            this.setState({data:x, filteredDatas:x}) 
-            
-            } 
-        
-        
-        })*/
-	
-	// console.log(this.state.data);
-    for(let index in this.state.data){
-      var lat1=this.state.data[index].latitude;
+	    
+	     for(let index in x){
+      var lat1=x[index].latitude;
       var lat2=this.state.UserLoc.lat;
-      var lng1=this.state.data[index].longitude;
+      var lng1=x[index].longitude;
       var lng2=this.state.UserLoc.lng;
       var R=6378137;
       var dlat=(lat1-lat2)*Math.PI/180;
@@ -207,14 +192,14 @@ componentDidMount(){
       var a=Math.sin(dlat/2)*Math.sin(dlat/2)+Math.cos(dlat1)*Math.cos(dlat1)*Math.sin(dlng/2)*Math.sin(dlng/2);
       var c=2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
       var d=R*c;
-      distancedata.push({name:this.state.data[index].name,distance:d});
+      distancedata.push({name:x[index].name,distance:d});
       //console.log(distancedata);
     }
      this.setState({
        distanceall:distancedata
      });
-     var temp=this.state.data;
-var temp1=this.state.data;
+     var temp=x;
+var temp1=x;
      var compare1=function(x,y){
       if(x.arrival.length>y.arrival.length){
         return -1;
@@ -289,6 +274,10 @@ var temp1=this.state.data;
         }]
        }
     });
+			
+   }
+componentDidMount(){
+
     }
     
         test=()=>{
@@ -636,11 +625,11 @@ ClickSearchType=(type)=>{
       { 
           if(type=='user')
         {
-           $.ajax({type:'delete', url:"http://csci2720.cse.cuhk.edu.hk/2011/"+data.username,success:()=>alert("delete succeed")})
+           $.ajax({type:'delete', url:"http://csci2720.cse.cuhk.edu.hk/2011/user"+data.username,success:()=>alert("delete succeed")})
             }
         else
         {
-             $.ajax({type:'delete', url:"http://csci2720.cse.cuhk.edu.hk/2011/"+data.name,success:(e)=>alert("delete succeed")})
+             $.ajax({type:'delete', url:"http://csci2720.cse.cuhk.edu.hk/2011/stop"+data.name,success:(e)=>alert("delete succeed")})
             }
         }
 
