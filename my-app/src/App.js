@@ -172,8 +172,20 @@ class Project extends React.Component
 			
    }
 componentDidMount(){
-    $.ajax({type:'GET',url:"http://csci2720.cse.cuhk.edu.hk/2011/getdata",success:(res)=>{this.setState({data:res, filteredDatas:res}) } });
-   // console.log(this.state.data);
+  //  $.ajax({type:'GET',url:"http://csci2720.cse.cuhk.edu.hk/2011/getdata",success:(res)=>{this.setState({data:res, filteredDatas:res}) } });
+       $.ajax({type:'GET',url:"http://csci2720.cse.cuhk.edu.hk/2011/getdata",
+        success:(res)=>{ 
+           
+            var x=res.filter(function(value) {if (value.latitude==null||value.arrival.length==0)return false; return true;})
+          
+            this.setState({data:x, filteredDatas:x}) 
+            
+            } 
+        
+        
+        })
+	
+	// console.log(this.state.data);
     for(let index in this.state.data){
       var lat1=this.state.data[index].latitude;
       var lat2=this.state.UserLoc.lat;
@@ -534,11 +546,11 @@ ClickSearchType=(type)=>{
         }
         
         }
-    ///////////////////////////////////////////////////for admin 链接还没改
+    ///////////////////////////////////////////////////for admin 
     adminlog=()=>{
     this.test();
-     $.ajax({type:'post',url:"http://localhost:3000/adminLogIn",success:(res)=>{this.setState({admin:true}) } })
-    $.ajax({type:'GET',url:"http://localhost:3000/user",success:(res)=>{this.setState({user:res}) } })
+     $.ajax({type:'post',url:"http://csci2720.cse.cuhk.edu.hk/2011/adminLogIn",success:(res)=>{this.setState({admin:true}) } })
+    $.ajax({type:'GET',url:"http://csci2720.cse.cuhk.edu.hk/2011/user",success:(res)=>{this.setState({user:res}) } })
 
     }    
     
@@ -550,11 +562,11 @@ ClickSearchType=(type)=>{
    if (username!=null&&pwd!=null&&favourite!=null)
    $.ajax({
         type:'post',
-        url:"http://localhost:3000/user",
+        url:"http://csci2720.cse.cuhk.edu.hk/2011/user",
         data:{username:username,pwd:pwd,favourite:favourite},
         success:(res)=>{
             $.ajax({type:'GET',
-                url:"http://localhost:3000/user",
+                url:"http://csci2720.cse.cuhk.edu.hk/2011/user",
                 success:(res)=>{
                     this.setState({user:res}) ;
                     } 
@@ -576,7 +588,7 @@ ClickSearchType=(type)=>{
    if (stopId!=null&&name!=null&&latitude!=null&&longitude!=null)
    $.ajax({
         type:'post',
-        url:"http://localhost:3000/stop",
+        url:"http://csci2720.cse.cuhk.edu.hk/2011/stop",
         data:{stopId:stopId,name:name,latitude:latitude,longitude:longitude},
         success:(res)=>{
          alert("added successfully");
@@ -588,11 +600,11 @@ ClickSearchType=(type)=>{
     ClickUser=()=>{
     
   
-    $.ajax({type:'GET',url:"http://localhost:3000/user",success:(res)=>{this.setState({user:res,showuser:true}) } })
+    $.ajax({type:'GET',url:"http://csci2720.cse.cuhk.edu.hk/2011/user",success:(res)=>{this.setState({user:res,showuser:true}) } })
     }
     ClickStop=()=>{
    
-   $.ajax({type:'GET',url:"http://localhost:3000/getdata",
+   $.ajax({type:'GET',url:"http://csci2720.cse.cuhk.edu.hk/2011/getdata",
         success:(res)=>{ 
            
             var x=res.filter(function(value) {if (value.latitude==null||value.arrival.length==0)return false; return true;})
@@ -607,7 +619,7 @@ ClickSearchType=(type)=>{
     }
     adminLogout=()=>{
         this.setState({admin:false});
-            $.ajax({type:'post',url:"http://localhost:3000/adminLogOut",success:(res)=>{this.setState({admin:false}) } })
+            $.ajax({type:'post',url:"http://csci2720.cse.cuhk.edu.hk/2011/adminLogOut",success:(res)=>{this.setState({admin:false}) } })
         }
     
    adminRightClick=(data,type,e)=>{
@@ -616,11 +628,11 @@ ClickSearchType=(type)=>{
       { 
           if(type=='user')
         {
-           $.ajax({type:'delete', url:"http://localhost:3000/user/"+data.username,success:()=>alert("delete succeed")})
+           $.ajax({type:'delete', url:"http://csci2720.cse.cuhk.edu.hk/2011/"+data.username,success:()=>alert("delete succeed")})
             }
         else
         {
-             $.ajax({type:'delete', url:"http://localhost:3000/stop/"+data.name,success:(e)=>alert("delete succeed")})
+             $.ajax({type:'delete', url:"http://csci2720.cse.cuhk.edu.hk/2011/"+data.name,success:(e)=>alert("delete succeed")})
             }
         }
 
