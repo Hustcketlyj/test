@@ -16,7 +16,7 @@ app.use(session({
 app.use(express.static('content'));
 
 /* connect to mongodb */
-var mongodb = "mongodb://ME:1@localhost/csci2720";
+var mongodb = "mongodb://hnchen9:x98957@localhost/csci2720";
 mongoose.set('useCreateIndex', true);
 mongoose.connect(mongodb, { useNewUrlParser: true });
 var db = mongoose.connection;
@@ -417,7 +417,7 @@ app.get('/user', (req, res) => {
 	}
 })
 
-app.listen(3000);
+app.listen(2011);
 
 
 
