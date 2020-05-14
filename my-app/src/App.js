@@ -160,19 +160,11 @@ class Project extends React.Component
                                          }
          
                         });}
-	    $.ajax({
-       url:'http://csci2720.cse.cuhk.edu.hk/2011/getdata',
-       type:'GET',
-       async :false, 
-       success:function(stops){
-       //console.log(stops);//done!
-       data=stops;
-       }
-     });
+	   
      //console.log(data);
      this.setState({
-     data:data,
-     showdata:data
+     data:alldata,
+     showdata:alldata
      });  
 			
    }
