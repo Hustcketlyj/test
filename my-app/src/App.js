@@ -4,7 +4,8 @@ import {GoogleMap,
         withGoogleMap, 
         Marker,
        } from "react-google-maps";
-import $ from "jquery"
+import $ from "jquery";
+import { Bar } from 'react-chartjs-2';
 
 var data;
 var userloc={lat:22.302711,lng:114.177216};
@@ -80,7 +81,35 @@ class Project extends React.Component
                      showdata:data,//showdata for map marker
                      distanceall:null,
                      zoom:18,
-                     detailmap:false
+                     detailmap:false,
+		     chartData:{
+                       labels:['stop1',"stop2",'stop3','shop4','shop5'],
+                       datasets:[{
+                         label:"Comment Number",
+                         data:[10,5,5,5,10],
+                         backgroundColor:[
+                           'rgba(255,99,132,0.2)',
+                           'rgba(54,162,235,0.2)',
+                           'rgba(255,206,86,0.2)',
+                           'rgba(75,192,192,0.2)',
+                           'rgba(153,102,255,0.2)', 
+                         ]
+                       }]
+                     },
+                     chartData1:{
+                      labels:['stop1',"stop2",'stop3','shop4','shop5'],
+                      datasets:[{
+                        label:"Route Number",
+                        data:[10,5,5,5,10],
+                        backgroundColor:[
+                          'rgba(255,99,132,0.2)',
+                          'rgba(54,162,235,0.2)',
+                          'rgba(255,206,86,0.2)',
+                          'rgba(75,192,192,0.2)',
+                          'rgba(153,102,255,0.2)', 
+                        ]
+                      }]
+                     }
                       
                       
         }
@@ -125,6 +154,78 @@ componentDidMount(){
      this.setState({
        distanceall:distancedata
      });
+     var temp=this.state.data;
+     var compare=function(x,y){
+       if(x.comment.length>y.comment.length){
+         return -1;
+       }else{
+         return 0;
+       }
+     }
+     var temp1=this.state.data;
+     var compare1=function(x,y){
+      if(x.arrival.length>y.arrival.length){
+        return -1;
+      }else{
+        return 0;
+      }
+     }
+     temp1=temp1.sort(compare1);
+     temp=temp.sort(compare);
+     var topfivename=[];
+     var topfivenum=[];
+     topfivename.push(temp[0].name);
+     topfivename.push(temp[1].name);
+     topfivename.push(temp[2].name);
+     topfivename.push(temp[3].name);
+     topfivename.push(temp[4].name);
+     topfivenum.push(temp[0].comment.length);
+     topfivenum.push(temp[1].comment.length);
+     topfivenum.push(temp[2].comment.length);
+     topfivenum.push(temp[3].comment.length);
+     topfivenum.push(temp[4].comment.length);
+     var topfivename1=[];
+     var topfivenum1=[];
+     topfivename1.push(temp1[0].name);
+     topfivename1.push(temp1[1].name);
+     topfivename1.push(temp1[2].name);
+     topfivename1.push(temp1[3].name);
+     topfivename1.push(temp1[4].name);
+     topfivenum1.push(temp1[0].arrival.length);
+     topfivenum1.push(temp1[1].arrival.length);
+     topfivenum1.push(temp1[2].arrival.length);
+     topfivenum1.push(temp1[3].arrival.length);
+     topfivenum1.push(temp1[4].arrival.length);
+     this.setState({
+      chartData:{
+        labels:topfivename,
+        datasets:[{
+          label:"Comment Number",
+          data:topfivenum,
+          backgroundColor:[
+            'rgba(255,99,132,0.2)',
+            'rgba(54,162,235,0.2)',
+            'rgba(255,206,86,0.2)',
+            'rgba(75,192,192,0.2)',
+            'rgba(153,102,255,0.2)', 
+          ]
+        }]
+      },
+      chartData1:{
+        labels:topfivename1,
+        datasets:[{
+          label:"Route Number",
+          data:topfivenum1,
+          backgroundColor:[
+            'rgba(255,99,132,0.2)',
+            'rgba(54,162,235,0.2)',
+            'rgba(255,206,86,0.2)',
+            'rgba(75,192,192,0.2)',
+            'rgba(153,102,255,0.2)', 
+          ]
+        }]
+      }
+    });
     }
     
         test=()=>{
@@ -474,11 +575,83 @@ handleRightClick=(stop,e)=>{
                    }
         }
     BackToList=()=>{
+        var temp=this.state.data;
+      var compare=function(x,y){
+        if(x.comment.length>y.comment.length){
+          return -1;
+        }else{
+          return 0;
+        }
+      }
+    var temp1=this.state.data;
+     var compare1=function(x,y){
+      if(x.arrival.length>y.arrival.length){
+        return -1;
+      }else{
+        return 0;
+      }
+     }
+     temp1=temp1.sort(compare1);
+      temp=temp.sort(compare);
+      var topfivename=[];
+      var topfivenum=[];
+      topfivename.push(temp[0].name);
+      topfivename.push(temp[1].name);
+      topfivename.push(temp[2].name);
+      topfivename.push(temp[3].name);
+      topfivename.push(temp[4].name);
+      topfivenum.push(temp[0].comment.length);
+      topfivenum.push(temp[1].comment.length);
+      topfivenum.push(temp[2].comment.length);
+      topfivenum.push(temp[3].comment.length);
+      topfivenum.push(temp[4].comment.length);
+      var topfivename1=[];
+     var topfivenum1=[];
+     topfivename1.push(temp1[0].name);
+     topfivename1.push(temp1[1].name);
+     topfivename1.push(temp1[2].name);
+     topfivename1.push(temp1[3].name);
+     topfivename1.push(temp1[4].name);
+     topfivenum1.push(temp1[0].arrival.length);
+     topfivenum1.push(temp1[1].arrival.length);
+     topfivenum1.push(temp1[2].arrival.length);
+     topfivenum1.push(temp1[3].arrival.length);
+     topfivenum1.push(temp1[4].arrival.length);
+    // console.log(topfivename);//done
+    // console.log(topfivenum);
         this.setState({showdetail:false,
           showdata:this.state.data,
           zoom:16,
-          detailmap:false
-        })
+          detailmap:false,
+          chartData:{
+            labels:topfivename,
+            datasets:[{
+              label:"Comment Number",
+              data:topfivenum,
+              backgroundColor:[
+                'rgba(255,99,132,0.2)',
+                'rgba(54,162,235,0.2)',
+                'rgba(255,206,86,0.2)',
+                'rgba(75,192,192,0.2)',
+                'rgba(153,102,255,0.2)', 
+              ]
+            }]
+          },
+          chartData1:{
+            labels:topfivename1,
+            datasets:[{
+              label:"Route Number",
+              data:topfivenum1,
+              backgroundColor:[
+                'rgba(255,99,132,0.2)',
+                'rgba(54,162,235,0.2)',
+                'rgba(255,206,86,0.2)',
+                'rgba(75,192,192,0.2)',
+                'rgba(153,102,255,0.2)', 
+              ]
+            }]
+          }
+        });
         }
 		
 DistanceSort=()=>{
@@ -587,7 +760,52 @@ DistanceSort=()=>{
           zoom={this.state.zoom}
           />
         </div>
-
+        <div className="barchart" style={{width:'50vw', height:'100vh',display:'inline-block'}}>
+  <Bar 
+data={this.state.chartData}
+options={{
+  maintainAspectRatio:false,
+  scales: {
+            yAxes: [{
+               ticks: {
+               beginAtZero: true,
+                min: 0
+              }    
+            }]
+          },
+   title:{
+   display:true,
+   text:"Top 5 STOPS with the most comments"
+ },
+ legend:{
+   display:"true",
+   position:"right"
+ }
+}}
+/>
+<Bar 
+data={this.state.chartData1}
+options={{
+  maintainAspectRatio:false,
+  scales: {
+            yAxes: [{
+               ticks: {
+               beginAtZero: true,
+                min: 0
+              }    
+            }]
+          },
+   title:{
+   display:true,
+   text:"Top 5 STOPS with the most routes"
+ },
+ legend:{
+   display:"true",
+   position:"right"
+ }
+}}
+/>
+</div>
         <StopInfo DistanceSort={this.DistanceSort}showfavorite={this.state.showfavorite} handleRightClick={this.handleRightClick} Loginout={this.state.Loginout}  showdetail={this.state.showdetail}Serchtype={this.state.Searchtype} data={this.state.filteredDatas} IdSort={this.IdSort} RouteSort={this.RouteSort} NameSort={this.NameSort} LatitudeSort={this.LatitudeSort} LongitudeSort={this.LongitudeSort} distanceall={this.state.distanceall}
         UserLoc={this.state.UserLoc} CenterLoc={this.state.CenterLoc } showdata={this.state.showdata} maplistener={this.maplistener} markerClick={this.mapright} showall={this.showAll} CenterName={this.state.CenterName}
         />
