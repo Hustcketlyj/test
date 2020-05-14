@@ -52,7 +52,7 @@ class Map extends React.Component{
 const WrappedMap =withScriptjs(withGoogleMap(Map));
 /* eslint-disable */
    
-    
+    var data;
 class Project extends React.Component
 {
 
@@ -66,7 +66,7 @@ class Project extends React.Component
                     showlog:false,
                       Searchtext:'',
                       showSign:false,
-                      data:null,
+                      data:data,
                       Searchtype:'Criteria',
                       filteredDatas:null,
                       showdetail:false,
@@ -118,7 +118,7 @@ class Project extends React.Component
 	    const routeline=['1','10','592','102P','103','90','118','117','12A','70'];
         var num;
 
-                var alldata=[];
+                alldata=[];
                 num=0;
                 for(let index1 in routeline){
                     
@@ -153,10 +153,7 @@ class Project extends React.Component
                                    console.log(error);
                                }
                     }); 
-					       this.setState({
-						       data:alldata,
-						       showdata:alldata
-					       });
+					       
 				       }
                                                 }
                                 });
@@ -236,7 +233,8 @@ componentDidMount(){
      topfivenum1.push(temp1[2].arrival.length);
      topfivenum1.push(temp1[3].arrival.length);
      topfivenum1.push(temp1[4].arrival.length);
-     this.setState({
+	if(topfivenum[0]!==0){
+	this.setState({
       chartData:{
         labels:topfivename,
         datasets:[{
@@ -250,7 +248,10 @@ componentDidMount(){
             'rgba(153,102,255,0.2)', 
           ]
         }]
-      },
+      }
+      });
+	}
+		this.setState({
       chartData1:{
         labels:topfivename1,
         datasets:[{
@@ -264,7 +265,7 @@ componentDidMount(){
             'rgba(153,102,255,0.2)', 
           ]
         }]
-      }
+       }
     });
     }
     
