@@ -173,12 +173,12 @@ app.get('/stop/:stopname', (req, res) => {
 		res.send({ 'login': 0 });
 	}
 });
-
+/*
 app.get('/*',(req,res)=>{
 	
 	res.sendFile(__dirname+"/src/index.html");
 	
-	})
+	})*/
 /* sign up */
 app.post('/signup', (req, res) => {
 	var username = req.body.username;
