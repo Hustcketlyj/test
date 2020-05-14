@@ -605,6 +605,26 @@ ClickSearchType=(type)=>{
         })
   
     }
+    adminLogout=()=>{
+        this.setState({admin:false});
+            $.ajax({type:'post',url:"http://localhost:3000/adminLogOut",success:(res)=>{this.setState({admin:false}) } })
+        }
+    
+   adminRightClick=(data,type,e)=>{
+        e.preventDefault();
+        if(this.state.actiontype=='Delete')
+      { 
+          if(type=='user')
+        {
+           $.ajax({type:'delete', url:"http://localhost:3000/user/"+data.username,success:()=>alert("delete succeed")})
+            }
+        else
+        {
+             $.ajax({type:'delete', url:"http://localhost:3000/stop/"+data.name,success:(e)=>alert("delete succeed")})
+            }
+        }
+
+        }   
     ////////////////////////////////////////////////////////////////////////////
 
 ClickSignUp=()=>{
@@ -829,6 +849,8 @@ DistanceSort=()=>{
           }
           
         }
+    //新加了一句，只要不点按钮，admin一直是false，就是原界面
+    if (this.state.admin==false)
     render(){
         return(
         	// navigation bar 
@@ -859,6 +881,7 @@ DistanceSort=()=>{
 
 		<p></p>
 		<div></div>
+<button className="btn btn-primary"onClick={this.adminlog}>Click to log as admin</button>
 		<Logform showLog={this.state.showLog} showSign={this.state.showSign}  handleLogin={this.handleLogin} handleSign={this.handleSign}/>
 
           <Stoplist distanceall={this.state.distanceall}DeleteFavorite={this.DeleteFavorite} addComment={this.addComment} favoritestop={this.state.favoritestop}  Loginout={this.state.Loginout} showfavorite={this.state.showfavorite}/>
@@ -929,13 +952,202 @@ options={{
         </div>
         
         )
+	    //新加的admin界面///////////////////////////////
+else
+	 return(
+        <div>
+        		<nav className="navbar navbar-expand-lg navbar-light bg-light">
+			<div className="navbar-header">
+		<a className="navbar-brand" href="#" onClick={this.test}>Flush</a>
+			</div>
+
+			<ul className="navbar-nav">
+               
+			<li className="nav-item active">
+		<a className="nav-link" href="#" onClick={this.ClickStop}>Stoplist</a>
+				</li>
+				
+                <li className="nav-item">              
+		<a className="nav-link" href="#" onClick={this.ClickUser}>Userlist</a>
+				</li>
+    
+			</ul>        
+        
+	
+		<a className="nav-right" >{this.state.name} </a>&nbsp;&nbsp;&nbsp;
+		<a className="nav-right" ><SignUp Loginout={true} ClickSignUp={this.ClickSignUp}/></a>&nbsp;&nbsp;&nbsp;
+		<a className="nav-right" ><LogInOut Loginout={true} toggleform={this.toggleform} Logout={this.adminLogout}/></a>
+		</nav>
+        <AdminStopInfo onContextMenu={this.adminRightClick}actiondelete={this.actiondelete}addstop={this.addstop}showuser={this.state.showuser} Serchtype={this.state.Searchtype} data={this.state.filteredDatas} IdSort={this.IdSort} RouteSort={this.RouteSort} NameSort={this.NameSort} LatitudeSort={this.LatitudeSort} LongitudeSort={this.LongitudeSort}/>
+        
+        <Userlist  onContextMenu={this.adminRightClick}actiondelete={this.actiondelete}addUser={this.addUser}showuser={this.state.showuser} user={this.state.user}/>
+</ div>        
+        )
+  ///////////////////////////////////      
         }
     
     
     
     
     }
+//admin 初始界面
+class AdminTablerow extends React.Component{
 
+        constructor(props){
+                super(props);
+                this.state={
+                
+                time:"",
+        }
+    }
+
+
+                 
+    
+     componentDidMount(){   
+
+         var time="";
+       //  if (this.props.arrival!=null)
+       {
+           $.ajax({type:'GET',
+                url:"https://rt.data.gov.hk/v1/transport/citybus-nwfb/eta/CTB/"+this.props.arrival[0].stopId+"/"+this.props.arrival[0].route,
+           
+                success:(res)=>{
+          
+                    res.data.forEach((arrival)=>{time=time+arrival.eta+"||";})
+        this.setState( {time:time})
+                    }})
+            }
+    }
+
+    render(){
+             var route='';
+            var stopId='###'
+          //  if (this.props.arrival[0]!=null)
+            //{
+                stopId=this.props.arrival[0].stopId;
+     this.props.arrival.forEach((data)=>{
+  // time=time+"Route"+data.route+':'+data.time+" ||";
+   route=route+"Route"+data.route+',';
+
+   }
+     )//}
+     
+     
+             return(
+           <tr onContextMenu={(e)=>this.props.onContextMenu(this.props.stop,'stop',e)}>
+        
+      <th scope="row">{stopId}</th>
+      <td>{this.props.name}</td>
+      <td>{this.props.latitude}</td>
+      <td>{this.props.longitude}</td>
+      <td>{route}</td>
+      <td>{this.state.time}</td>
+    </tr>)
+        
+        }
+    }
+    //admin的stop table
+ class AdminStopInfo extends React.Component{
+    
+    render(){
+        
+         if (this.props.showuser==true)
+           return null;
+        return(
+        <div className="table-responsive">
+        <h1 className="text-primary text-center">Stop Information</h1>
+        <h3 className="text-info text-center">You could rightclick the stop on table to }</h3>
+       <button className= "btn btn-lg btn-outline-danger btn-block text-uppercase" onClick={this.props.actiondelete}>Delete</button>
+       <button className= "btn btn-lg btn-outline-primary btn-block text-uppercase">Update</button>
+       <h3 className="text-info text-center">You could click Add button to add stop</h3>
+       <button className= "btn btn-lg btn-outline-success btn-block text-uppercase" onClick={this.props.addstop}>Add</button>
+              <h3 className="text-info text-center">You could click Upload button to Upload stop file</h3>
+                     <button className= "btn btn-lg btn-outline-primary btn-block text-uppercase">Upload</button>
+        <table className="table table-hover">
+  <thead className="thead-light">
+    <tr>
+    <th scope="col"   onClick={this.props.IdSort}>StopId(click to sort by alphabet) </th>
+      <th scope="col" onClick={this.props.NameSort}>StopName(click to sort by alphabet)</th>
+      <th scope="col"   onClick={this.props.LatitudeSort}>Latitude(click to sort from South to North) </th>
+      <th scope="col"   onClick={this.props.LongitudeSort}>Longitude(click to sort from West to East) </th>
+      <th scope="col"  onClick={this.props.RouteSort}>Route(click to sort by alphabet)</th>
+      <th scope="col"  >ETA</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+   {
+       this.props.data.map(stop=>
+       <AdminTablerow  onContextMenu={this.props.onContextMenu}stop={stop} key={stop._id} name={stop.name} arrival={stop.arrival}  longitude={stop.longitude}  latitude={stop.latitude} />      
+       )
+   }
+
+  </tbody>
+ </table>
+        </div>
+        )
+        
+       
+        }
+    }
+ /////admin 的userlist   
+  class UserlistTable extends React.Component{
+          render(){       
+              var favourite='';
+            
+     this.props.user.favourite.forEach((data)=>{
+  // time=time+"Route"+data.route+':'+data.time+" ||";
+   favourite=favourite+"BusName:"+data+',';
+
+   }
+     )
+           return(
+                        
+           <tr onContextMenu={(e)=>this.props.onContextMenu(this.props.user,'user',e)}>
+        
+      
+      <td scope="row">{this.props.user.username}</td>
+      <td>{this.props.user.pwd}</td>
+      <td>{favourite}</td>
+
+    </tr>)
+    }
+    }
+    
+class Userlist extends React.Component{
+    
+    render(){
+        console.log(this.props.showuser)
+       if ( this.props.user==undefined||this.props.user==null||this.props.showuser==false)
+       return null;
+        return(
+        <div className="table-responsive">
+        <h1 className="text-primary text-center">User Information</h1>
+<h3 className="text-info text-center">You could rightclick the User on table to </h3>
+       <button className= "btn btn-lg btn-outline-danger btn-block text-uppercase" onClick={this.props.actiondelete}>Delete</button>
+       <button className= "btn btn-lg btn-outline-primary btn-block text-uppercase">Update</button>
+       <h3 className="text-info text-center">You could click Add button to add User</h3>
+       <button className= "btn btn-lg btn-outline-success btn-block text-uppercase" onClick={this.props.addUser}>Add</button>
+        <table className="table table-hover">
+  <thead className="thead-light">
+    <tr>
+    <th scope="col"  >Username</th>
+      <th scope="col" >Password</th>
+      <th scope="col"  >Favorite</th>
+    </tr>
+  </thead>
+  <tbody>
+{
+    this.props.user.map((data)=><UserlistTable onContextMenu={this.props.onContextMenu} key={data._id} user={data}/>)
+    }
+  </tbody>
+</table>
+        </div>)
+        
+        }
+    }    
+////////////////////////////////////////////////////////////////////////////
 class Dropdown extends React.Component{
 
 render(){
@@ -978,7 +1190,7 @@ var distance=this.props.distanceall.find((value)=>{if (value.name===this.props.s
       <td>{route}</td>
       <td>{distance}</td>
     </tr>)
-        
+
         }
     }
 
