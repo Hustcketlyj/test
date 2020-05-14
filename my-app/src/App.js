@@ -152,7 +152,12 @@ class Project extends React.Component
                                error:function(error){
                                    console.log(error);
                                }
-                    }); }
+                    }); 
+					       this.setState({
+						       data:alldata,
+						       showdata:alldata
+					       });
+				       }
                                                 }
                                 });
                         
@@ -162,10 +167,7 @@ class Project extends React.Component
                         });}
 	   
      //console.log(data);
-     this.setState({
-     data:alldata,
-     showdata:alldata
-     });  
+   
 			
    }
 componentDidMount(){
