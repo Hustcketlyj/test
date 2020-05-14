@@ -116,7 +116,7 @@ class Project extends React.Component
     }
     componentWillMount(){
       $.ajax({
-       url:'http://localhost:3000/getdata',
+       url:'http://csci2720.cse.cuhk.edu.hk/2011/getdata',
        type:'GET',
        async :false, 
        success:function(stops){
