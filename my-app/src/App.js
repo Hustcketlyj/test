@@ -129,6 +129,52 @@ class Project extends React.Component
      data:data,
      showdata:data
      });  
+	    const routeline=['1','10','592','102P','103','90','118','117','12A','70'];
+        var num;
+
+                var alldata=[];
+                num=0;
+                for(let index1 in routeline){
+                    
+
+                   $.ajax({
+                      url:"https://rt.data.gov.hk/v1/transport/citybus-nwfb/route-stop/ctb/"+routeline[index1]+"/inbound",
+                      type:'GET',
+                      
+                      success:function(result){
+  
+                       for(let index in result.data){
+              
+                         $.ajax({
+                           url:"https://rt.data.gov.hk/v1/transport/citybus-nwfb/stop/"+result.data[index].stop,
+                           type:'GET',
+                           
+                           success:function(res){
+  
+                            var newdata={stopId:result.data[index].stop,lat:res.data.lat,long:res.data.long,route:routeline[index1],name:res.data.name_en};
+                              console.log(newdata);
+                              alldata.push(newdata);
+                                       num++;
+                                       if (num==229){
+                                          $.ajax({
+                              url:'http://csci2720.cse.cuhk.edu.hk/2011/data',
+                              type:"POST",
+                              data:{alldata:alldata},
+                              success:function(re){
+                               console.log("success!");
+                               },
+                               error:function(error){
+                                   console.log(error);
+                               }
+                    }); }
+                                                }
+                                });
+                        
+                                                }
+                                         }
+         
+                        });}
+			
    }
 componentDidMount(){
 
