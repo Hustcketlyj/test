@@ -771,7 +771,8 @@ handleRightClick=(stop,e)=>{
                   CenterLoc:{lat:stop.latitude,lng:stop.longitude},
                   CenterName:stop.name,
                   showdata:[stop],
-                  zoom:18
+                  zoom:18,
+			detailmap:true	  
                   })
                    }
         }
