@@ -1,0 +1,54 @@
+import React from "react";
+import {GoogleMap, withScriptjs, withGoogleMap, Marker } from "react-google-maps";
+import $ from "jquery"
+var data;
+function Map(){
+  function mark(){
+    $.ajax({
+      url:'http://localhost:3000/stopmark',
+      type:'GET',
+      async :false, 
+      success:function(stops){
+      //console.log(stops);//done!
+      data=stops;
+      }
+    });
+    //console.log('*****'+data); //done!! but need to load data at first hand 
+   }
+  return(
+    <div>
+    <GoogleMap
+    defaultZoom={16}
+    defaultCenter={{lat:22.302711, lng:114.177216}}//initial center
+    >
+      //{data.map(d=>(
+        <Marker
+                position={{
+                  lat:d.latitude,
+                  lng:d.longitude
+                }}
+                title={
+                  d.name
+                }
+          />
+      ))}
+    </GoogleMap>
+    <button onClick={mark}>*_*</button>
+    </div>
+  );
+}
+const WrappedMap =withScriptjs(withGoogleMap(Map));
+
+export default function App(){
+  return (
+    <div style={{width:'100vw', height:'100vh'}}>
+    <WrappedMap
+    googleMapURL={'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyBr-nrnUY_lRS365y-hr51NJlF0regruwo'}
+    loadingElement={<div style={{height:'100%'}}/>}
+    containerElement={<div style={{height:"100%"}}/>}
+    mapElement={<div style={{height:"100%"}}/>}
+    
+    />
+    </div>
+  );
+}

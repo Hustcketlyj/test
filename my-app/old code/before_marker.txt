@@ -1,0 +1,310 @@
+import React from "react";
+import {GoogleMap,
+        withScriptjs,
+        withGoogleMap, 
+        Marker
+       } from "react-google-maps";
+import $ from "jquery"
+
+var data;
+var userloc={lat:22.302711,lng:114.177216};
+var centerloc={lat:22.302711,lng:114.177216};
+class Map extends React.Component{
+  render(){
+    return(<div>
+    <GoogleMap
+    defaultZoom={18}
+    center={this.props.CenterLoc}//initial center
+    onClick={this.props.maplistener}
+    >
+      {data.map(d=>(
+        <Marker
+                position={{
+                  lat:d.latitude,
+                  lng:d.longitude
+                }}
+                title={
+                  'Stop name: '+d.name
+                }
+          />
+      ))}
+      <Marker
+        position={
+         this.props.UserLoc
+        }
+        title={
+          'User Location'
+        }
+        />
+    </GoogleMap>
+    </div>);
+    
+  }
+}
+class Table extends React.Component{
+  render(){
+    return(
+    <div>
+      <button onClick={this.props.showAll}>Click to show all</button>
+      <p>or choose one stop in this list:</p>
+      <ul>
+        {this.props.data.map(d=>(
+          <li onClick={this.props.Goto}>
+            {d.name}
+          </li>
+        ))}
+      </ul>
+    </div>
+    );
+  }
+}
+const WrappedMap =withScriptjs(withGoogleMap(Map));
+class DistanceTable extends React.Component{
+  render(){
+    var lat1=this.props.currentloc.lat;
+    var lat2=this.props.userloc.lat;
+    var lng1=this.props.currentloc.lng;
+    var lng2=this.props.userloc.lng;
+    var R=6378137;
+    var dlat=(lat1-lat2)*Math.PI/180;
+    var dlng=(lng1-lng2)*Math.PI/180;
+    var dlat1=lat1*Math.PI/180;
+    var dlat2=lat2*Math.PI/180;
+    var a=Math.sin(dlat/2)*Math.sin(dlat/2)+Math.cos(dlat1)*Math.cos(dlat1)*Math.sin(dlng/2)*Math.sin(dlng/2);
+    var c=2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+    var d=R*c;
+
+    return(
+    <div>
+    <p>Distance from your location to {this.props.currentlocName} is {d} m</p>
+    </div>
+    );
+    
+  }
+}
+export default class App extends React.Component{
+  constructor(props){
+    super(props);
+    this.state={
+      UserLoc:userloc,
+      CenterLoc:centerloc,
+      data:data,
+      CenterName:'nowhere',
+      showdata:data
+    };
+  }
+  componentWillMount(){
+    $.ajax({
+     url:'http://localhost:3000/stopmark',
+     type:'GET',
+     async :false, 
+     success:function(stops){
+     //console.log(stops);//done!
+     data=stops;
+     }
+   });
+   //console.log(data);
+   this.setState({
+   data:data,
+   showdata:data
+   });  
+ }
+ maplistener=event=>{
+  //event.preventDefault();
+ // console.log('*****should be position'+event.latLng);
+  userloc={lat:event.latLng.lat(),lng:event.latLng.lng()};
+  this.setState({
+    UserLoc:userloc
+  });
+}
+GotoCenter=(e)=>{
+  //console.log("you click this stop |"+e.target.innerHTML);
+  for(let index in this.state.data){
+    if(this.state.data[index].name.localeCompare(e.target.innerHTML)===0){
+   // console.log("find this name: "+this.state.data[index].name);
+      this.setState({
+        CenterLoc:{lat:this.state.data[index].latitude,lng:this.state.data[index].longitude},
+        CenterName:e.target.innerHTML,
+        showdata:this.state.data[index]
+      });
+      //console.log("Now the center is: "+this.state.CenterLoc.lat);
+      break;
+    }
+  }
+}
+showAll=()=>{
+    this.setState({
+        showdata:this.state.data
+    });
+}
+  render(){
+    return (
+    <div style={{width:'100vw', height:'100vh'}}>
+    <WrappedMap
+    googleMapURL={'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyBr-nrnUY_lRS365y-hr51NJlF0regruwo'}
+    loadingElement={<div style={{height:'100%'}}/>}
+    containerElement={<div style={{height:"100%"}}/>}
+    mapElement={<div style={{height:"100%"}}/>}
+    CenterLoc={this.state.CenterLoc}
+    maplistener={this.maplistener}
+    UserLoc={this.state.UserLoc}
+    showdata={this.state.showdata}
+    />
+    <DistanceTable userloc={this.state.UserLoc} currentlocName={this.state.CenterName} currentloc={this.state.CenterLoc}/>
+    <Table data={this.state.data} Goto={this.GotoCenter} showAll={this.showAll}/>
+    </div>
+  );
+  }
+  
+}
+
+
+import React from "react";
+import {GoogleMap,
+        withScriptjs,
+        withGoogleMap, 
+        Marker
+       } from "react-google-maps";
+import $ from "jquery"
+
+var data;
+var userloc={lat:22.302711,lng:114.177216};
+var centerloc={lat:22.302711,lng:114.177216};
+class Map extends React.Component{
+  render(){
+    return(<div>
+    <GoogleMap
+    defaultZoom={18}
+    center={this.props.CenterLoc}//initial center
+    onClick={this.props.maplistener}
+    >
+      {data.map(d=>(
+        <Marker
+                position={{
+                  lat:d.latitude,
+                  lng:d.longitude
+                }}
+                title={
+                  'Stop name: '+d.name
+                }
+          />
+      ))}
+      <Marker
+        position={
+         this.props.UserLoc
+        }
+        title={
+          'User Location'
+        }
+        />
+    </GoogleMap>
+    </div>);
+    
+  }
+}
+class Table extends React.Component{
+  render(){
+    return(
+    <div>
+      <p>list of stop</p>
+      <ul>
+        {this.props.data.map(d=>(
+          <li onClick={this.props.Goto}>
+            {d.name}
+          </li>
+        ))}
+      </ul>
+    </div>
+    );
+  }
+}
+const WrappedMap =withScriptjs(withGoogleMap(Map));
+class DistanceTable extends React.Component{
+  render(){
+    var lat1=this.props.currentloc.lat;
+    var lat2=this.props.userloc.lat;
+    var lng1=this.props.currentloc.lng;
+    var lng2=this.props.userloc.lng;
+    var R=6378137;
+    var dlat=(lat1-lat2)*Math.PI/180;
+    var dlng=(lng1-lng2)*Math.PI/180;
+    var dlat1=lat1*Math.PI/180;
+    var dlat2=lat2*Math.PI/180;
+    var a=Math.sin(dlat/2)*Math.sin(dlat/2)+Math.cos(dlat1)*Math.cos(dlat1)*Math.sin(dlng/2)*Math.sin(dlng/2);
+    var c=2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+    var d=R*c;
+
+    return(
+    <div>
+    <p>Distance from your location to {this.props.currentlocName} is {d} m</p>
+    </div>
+    );
+    
+  }
+}
+export default class App extends React.Component{
+  constructor(props){
+    super(props);
+    this.state={
+      UserLoc:userloc,
+      CenterLoc:centerloc,
+      data:data,
+      CenterName:'nowhere'
+    };
+  }
+  componentWillMount(){
+    $.ajax({
+     url:'http://localhost:3000/stopmark',
+     type:'GET',
+     async :false, 
+     success:function(stops){
+     //console.log(stops);//done!
+     data=stops;
+     }
+   });
+   //console.log(data);
+   this.setState({
+   data:data
+   });  
+ }
+ maplistener=event=>{
+  //event.preventDefault();
+ // console.log('*****should be position'+event.latLng);
+  userloc={lat:event.latLng.lat(),lng:event.latLng.lng()};
+  this.setState({
+    UserLoc:userloc
+  });
+}
+GotoCenter=(e)=>{
+  //console.log("you click this stop |"+e.target.innerHTML);
+  for(let index in this.state.data){
+    if(this.state.data[index].name.localeCompare(e.target.innerHTML)===0){
+   // console.log("find this name: "+this.state.data[index].name);
+      this.setState({
+        CenterLoc:{lat:this.state.data[index].latitude,lng:this.state.data[index].longitude},
+        CenterName:e.target.innerHTML
+      });
+      //console.log("Now the center is: "+this.state.CenterLoc.lat);
+      break;
+    }
+  }
+}
+  render(){
+    return (
+    <div style={{width:'100vw', height:'100vh'}}>
+    <WrappedMap
+    googleMapURL={'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyBr-nrnUY_lRS365y-hr51NJlF0regruwo'}
+    loadingElement={<div style={{height:'100%'}}/>}
+    containerElement={<div style={{height:"100%"}}/>}
+    mapElement={<div style={{height:"100%"}}/>}
+    CenterLoc={this.state.CenterLoc}
+    maplistener={this.maplistener}
+    UserLoc={this.state.UserLoc}
+    />
+    <DistanceTable userloc={this.state.UserLoc} currentlocName={this.state.CenterName} currentloc={this.state.CenterLoc}/>
+    <Table data={this.state.data} Goto={this.GotoCenter}/>
+    </div>
+  );
+  }
+  
+}
