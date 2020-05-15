@@ -457,6 +457,23 @@ app.post('/user', (req, res) => {
 		user.save();
 	
 })
+//deal with csv
+app.post('/CSV',(req,res)=>{
+
+		req.body.data.forEach((data)=>
+		{
+			if (data.name!=null||data.stopId!=null||data.latitude!=null||data.longitude!=null||data.stopId==''||data.name==undefined)
+		{	var stop = new Stop({
+	
+	latitude:  data.latitude ,
+	longitude: data.longitude ,
+	name: data.name ,
+	comment:[],
+	arrival:[{stopId: data.stopId,route:'###'}]
+});
+		stop.save();}
+		})
+	})
 /* get all users */
 app.get('/user', (req, res) => {
 	
