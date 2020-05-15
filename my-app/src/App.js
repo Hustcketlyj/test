@@ -657,7 +657,8 @@ ClickSearchType=(type)=>{
     ///////////////////////////////////////////////////for admin 
     adminlog=()=>{
     this.test();
-     $.ajax({type:'post',url:"http://csci2720.cse.cuhk.edu.hk/2011/adminLogIn",success:(res)=>{this.setState({admin:true}) } })
+     $.ajax({type:'post',url:"http://csci2720.cse.cuhk.edu.hk/2011/adminLogIn",
+	     success:(res)=>{this.setState({admin:true,Searchtype:'Criteria', Searchtext:''}) } })
     $.ajax({type:'GET',url:"http://csci2720.cse.cuhk.edu.hk/2011/user",success:(res)=>{this.setState({user:res});		      
 	var qp=res;
         var compare2=function(x,y){
@@ -781,11 +782,11 @@ ClickSearchType=(type)=>{
       { 
           if(type=='user')
         {
-           $.ajax({type:'delete', url:"http://csci2720.cse.cuhk.edu.hk/2011/user"+data.username,success:()=>alert("delete succeed")})
+           $.ajax({type:'delete', url:"http://csci2720.cse.cuhk.edu.hk/2011/user/"+data.username,success:()=>alert("delete succeed")})
             }
         else
         {
-             $.ajax({type:'delete', url:"http://csci2720.cse.cuhk.edu.hk/2011/stop"+data.name,success:(e)=>alert("delete succeed")})
+             $.ajax({type:'delete', url:"http://csci2720.cse.cuhk.edu.hk/2011/stop/"+data.name,success:(e)=>alert("delete succeed")})
             }
         }
 
