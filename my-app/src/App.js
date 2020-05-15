@@ -124,7 +124,7 @@ class Adminchart extends React.Component{
                  },
           title:{
           display:true,
-          text:"Top 5 STOPS with the most comments"
+          text:"Top 5 USERS with the most favourite"
         },
         legend:{
           display:"true",
@@ -1142,7 +1142,7 @@ else
 		<a className="nav-right" ><SignUp Loginout={true} ClickSignUp={this.ClickSignUp}/></a>&nbsp;&nbsp;&nbsp;
 		<a className="nav-right" ><LogInOut Loginout={true} toggleform={this.toggleform} Logout={this.adminLogout}/></a>
 		</nav>
-		 <div><Adminchart chartadmin={this.props.chartData2}/></div>
+		 <div><Adminchart chartadmin={this.state.chartData2}/></div>
         <AdminStopInfo actiontype={this.state.actiontype} actionupdata={this.actionupdata} onContextMenu={this.adminRightClick}actiondelete={this.actiondelete}addstop={this.addstop}showuser={this.state.showuser} Serchtype={this.state.Searchtype} data={this.state.filteredDatas} IdSort={this.IdSort} RouteSort={this.RouteSort} NameSort={this.NameSort} LatitudeSort={this.LatitudeSort} LongitudeSort={this.LongitudeSort}/>
         
         <UserList  actiontype={this.state.actiontype}actionupdata={this.actionupdata} onContextMenu={this.adminRightClick}actiondelete={this.actiondelete}addUser={this.addUser}showuser={this.state.showuser} user={this.state.user}/>
