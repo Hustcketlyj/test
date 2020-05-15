@@ -737,7 +737,10 @@ ClickSearchType=(type)=>{
     
     this.setState({actiontype:'Delete'})
     }
+    	actionupdata=()=>{
     
+    this.setState({actiontype:'Updata'})
+    }
     addstop=()=>{
         var stopId=prompt("Please enter the stopid", "111111")
     var name=prompt("Please enter the stopname", "someplace");
