@@ -1105,9 +1105,9 @@ else
 		<a className="nav-right" ><SignUp Loginout={true} ClickSignUp={this.ClickSignUp}/></a>&nbsp;&nbsp;&nbsp;
 		<a className="nav-right" ><LogInOut Loginout={true} toggleform={this.toggleform} Logout={this.adminLogout}/></a>
 		</nav>
-        <AdminStopInfo onContextMenu={this.adminRightClick}actiondelete={this.actiondelete}addstop={this.addstop}showuser={this.state.showuser} Serchtype={this.state.Searchtype} data={this.state.filteredDatas} IdSort={this.IdSort} RouteSort={this.RouteSort} NameSort={this.NameSort} LatitudeSort={this.LatitudeSort} LongitudeSort={this.LongitudeSort}/>
+        <AdminStopInfo actiontype={this.state.actiontype} actionupdata={this.actionupdata} onContextMenu={this.adminRightClick}actiondelete={this.actiondelete}addstop={this.addstop}showuser={this.state.showuser} Serchtype={this.state.Searchtype} data={this.state.filteredDatas} IdSort={this.IdSort} RouteSort={this.RouteSort} NameSort={this.NameSort} LatitudeSort={this.LatitudeSort} LongitudeSort={this.LongitudeSort}/>
         
-        <UserList  onContextMenu={this.adminRightClick}actiondelete={this.actiondelete}addUser={this.addUser}showuser={this.state.showuser} user={this.state.user}/>
+        <UserList  actiontype={this.state.actiontype}actionupdata={this.actionupdata} onContextMenu={this.adminRightClick}actiondelete={this.actiondelete}addUser={this.addUser}showuser={this.state.showuser} user={this.state.user}/>
 </ div>        
         )
   ///////////////////////////////////      
@@ -1184,9 +1184,9 @@ class AdminTablerow extends React.Component{
         return(
         <div className="table-responsive">
         <h1 className="text-primary text-center">Stop Information</h1>
-        <h3 className="text-info text-center">You could rightclick the stop on table to }</h3>
+        <h3 className="text-info text-center">You could rightclick the stop on table to {this.props.actiontype}</h3>
        <button className= "btn btn-lg btn-outline-danger btn-block text-uppercase" onClick={this.props.actiondelete}>Delete</button>
-       <button className= "btn btn-lg btn-outline-primary btn-block text-uppercase">Update</button>
+       <button className= "btn btn-lg btn-outline-primary btn-block text-uppercase"onClick={this.props.actionupdata}>Update</button>
        <h3 className="text-info text-center">You could click Add button to add stop</h3>
        <button className= "btn btn-lg btn-outline-success btn-block text-uppercase" onClick={this.props.addstop}>Add</button>
               <h3 className="text-info text-center">You could click Upload button to Upload stop file</h3>
@@ -1251,9 +1251,9 @@ class UserList extends React.Component{
         return(
         <div className="table-responsive">
         <h1 className="text-primary text-center">User Information</h1>
-<h3 className="text-info text-center">You could rightclick the User on table to </h3>
+<h3 className="text-info text-center">You could rightclick the User on table to {this.props.actiontype}</h3>
        <button className= "btn btn-lg btn-outline-danger btn-block text-uppercase" onClick={this.props.actiondelete}>Delete</button>
-       <button className= "btn btn-lg btn-outline-primary btn-block text-uppercase">Update</button>
+       <button className= "btn btn-lg btn-outline-primary btn-block text-uppercase" onClick={this.props.actionupdata}>Update</button>
        <h3 className="text-info text-center">You could click Add button to add User</h3>
        <button className= "btn btn-lg btn-outline-success btn-block text-uppercase" onClick={this.props.addUser}>Add</button>
         <table className="table table-hover">
