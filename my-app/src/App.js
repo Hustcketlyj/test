@@ -656,6 +656,10 @@ ClickSearchType=(type)=>{
         }
     ///////////////////////////////////////////////////for admin 
     adminlog=()=>{
+	    if (this.state.Loginout==true)	
+		alert("Please log out first!");
+	    else
+	    {
     this.test();
      $.ajax({type:'post',url:"http://csci2720.cse.cuhk.edu.hk/2011/adminLogIn",
 	     success:(res)=>{this.setState({admin:true,Searchtype:'Criteria', Searchtext:''}) } })
@@ -705,7 +709,7 @@ ClickSearchType=(type)=>{
 	
 	
 	} });
-
+	    }
     }    
     
     addUser=()=>{
@@ -776,21 +780,51 @@ ClickSearchType=(type)=>{
             $.ajax({type:'post',url:"http://csci2720.cse.cuhk.edu.hk/2011/adminLogOut",success:(res)=>{this.setState({admin:false}) } })
         }
     
-   adminRightClick=(data,type,e)=>{
+    adminRightClick=(data,type,e)=>{
         e.preventDefault();
         if(this.state.actiontype=='Delete')
       { 
           if(type=='user')
         {
-           $.ajax({type:'delete', url:"http://csci2720.cse.cuhk.edu.hk/2011/user/"+data.username,success:()=>alert("delete succeed")})
-            }
+           $.ajax({type:'delete', async:false,url:"http://csci2720.cse.cuhk.edu.hk/2011/user/"+data.username,success:()=>alert("delete succeed")})
+        
+//$.ajax({type:'GET',url:"http://localhost:3000/user",success:(res)=>{this.setState({user:res,showuser:true}) } })
+    
+			}
         else
         {
              $.ajax({type:'delete', url:"http://csci2720.cse.cuhk.edu.hk/2011/stop/"+data.name,success:(e)=>alert("delete succeed")})
             }
         }
+		else
+		{
+			if(type=='user')
+        {
+			var username=prompt("Please enter the username", "someone");
+    var pwd=prompt("Please enter the password", "1111");
+    var favourite=prompt("Please enter the favourite", "sleep");
+           $.ajax({type:'put', url:"http://csci2720.cse.cuhk.edu.hk/2011/user/"+data.username,
+		   data:{username:username,pwd:pwd,favourite:favourite},
+		   success:()=>alert("update succeed")})
+            }
+			
+			else
+        {
+			var stopId=prompt("Please enter the stopid", "111111")
+    var name=prompt("Please enter the stopname", "someplace");
+    var latitude=prompt("Please enter the latitude", "11");
+    var longitude=prompt("Please enter the longitude", "11");
+	var route=prompt("Please enter the route", "11");
+   if (stopId!=null&&name!=null&&latitude!=null&&longitude!=null)
+       {   $.ajax({type:'put', url:"http://csci2720.cse.cuhk.edu.hk/2011/stop/"+data.name,
+	   data:{stopId:stopId,name:name,latitude:latitude,longitude:longitude,route:route},
+	   success:(e)=>alert("updata succeed")})
+	   }
+            }
+		}
 
         }   
+
     ////////////////////////////////////////////////////////////////////////////
 
 ClickSignUp=()=>{
