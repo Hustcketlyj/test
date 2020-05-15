@@ -729,7 +729,7 @@ ClickSearchType=(type)=>{
 	});
 	var commentnum=[];
 	for(let i in res){
-		commentnum.push({name:res[i].username,num:0};
+		commentnum.push({name:res[i].username,num:0});
 			}
 	for(let i in this.state.data){
 			if(this.state.data[i].comment.length!==0){
