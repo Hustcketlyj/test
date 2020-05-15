@@ -735,8 +735,8 @@ ClickSearchType=(type)=>{
 			if(this.state.data[i].comment.length!==0){
 				for(let j in this.state.data[i].comment){
 					for(let k in commentnum){
-						if(comment[k].name===this.state.data[i].comment[j].username){
-							comment[k].num++;
+						if(commentnum[k].name===this.state.data[i].comment[j].username){
+							commentnum[k].num++;
 						}
 						break;
 					}
