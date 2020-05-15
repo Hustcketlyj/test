@@ -1146,7 +1146,8 @@ else
         <AdminStopInfo actiontype={this.state.actiontype} actionupdata={this.actionupdata} onContextMenu={this.adminRightClick}actiondelete={this.actiondelete}addstop={this.addstop}showuser={this.state.showuser} Serchtype={this.state.Searchtype} data={this.state.filteredDatas} IdSort={this.IdSort} RouteSort={this.RouteSort} NameSort={this.NameSort} LatitudeSort={this.LatitudeSort} LongitudeSort={this.LongitudeSort}/>
         
         <UserList  actiontype={this.state.actiontype}actionupdata={this.actionupdata} onContextMenu={this.adminRightClick}actiondelete={this.actiondelete}addUser={this.addUser}showuser={this.state.showuser} user={this.state.user}/>
-</ div>        
+<AboutProject />
+		 </ div>        
         )
   ///////////////////////////////////      
         }
@@ -1155,6 +1156,40 @@ else
     
     
     }
+	//About This Project
+	class AboutProject extends React.Component{
+	render(){
+		
+		return (<div><h3 className="text-info text-center">About this project</h3>
+		<ol>
+		<li><h5>Names and workload distribution of each group member:</h5>
+<p>Main contributors:</p>
+<p>LU Yijian: User location, Charting statistics, User actions</p>
+<p>CHEN Haonan: User actions, Admin actions, Non-user actions</p>
+
+<p>Assistant:</p>
+<p>LI Peirong</p>
+</li>
+		<li><h5>Basic “how-to” of your project app:</h5>
+        <ul><li><p> Install and start the application:</p>In the downloaded folder, do the following:<p>npm install;</p><p>npm run back.js;</p><p>npm start</p></li>
+        <li><p>User actions:</p><p>Sign up:</p><p>Login as user:</p><p>Log out:</p><p>Add a favourite stop:</p>
+        <p>Remove stop(s) from favourite list:</p><p>Get home location:</p><p>Update home location:</p></li>
+        </ul>
+        </li>
+		<li><h5> Design of data schemas and models of your database:</h5><ul><li>Schemas:<p>User schema: username, password, favourite stop(s);</p>
+        <p>Stop schema: latitude, longitude, stop name, arrival time, comments.</p>
+        </li><li> Models:<p>User</p><p>Stop</p></li></ul></li>
+        <li><h5>We have carefully read the article: http://www.cuhk.edu.hk/policy/academichonesty</h5></li>
+		<li><h5>Technologies and frameworks/libraries in use:</h5><p>React + Express</p></li>
+        
+		
+		</ol><table className="table table-hover">
+        <thead><tr><th>Advantages</th><th>Disadvantages</th></tr></thead><tbody><tr><td>Better performance due to virtual DOM</td><td>Need to be updated constantly</td></tr><tr><td>Reusable component for later development</td><td>NA</td></tr></tbody>
+        </table>
+		</div>)
+		
+		}
+}
 //admin 初始界面
 class AdminTablerow extends React.Component{
 
