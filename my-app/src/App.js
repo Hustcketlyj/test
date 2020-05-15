@@ -1249,7 +1249,49 @@ class AdminTablerow extends React.Component{
     }
     //admin的stop table
  class AdminStopInfo extends React.Component{
-    
+                    constructor(props){
+                super(props);
+                this.state={
+                  selectedFile:null                      
+                      
+        }
+    }
+send=()=>{
+   var data = new FormData() ;
+    data.append('file', this.state.selectedFile);
+    console.log(data);
+   // $.ajax({type:'post', data:data,url:"http://localhost:3000/CSV",success:()=>{alert("succeed")}})
+   var f=this.state.selectedFile
+var r = new FileReader();
+      r.onload = function(e) { 
+          var contents = e.target.result;
+         // document.write("File Uploaded! <br />" + "name: " + f.name + "<br />" + "content: " + contents + "<br />" + "type: " + f.type + "<br />" + "size: " + f.size + " bytes <br />");
+
+          var lines = contents.split("\n");
+         var  output = [];
+          for (var i=1; i<lines.length; i++){
+       {  
+           var single= lines[i].split(",");
+         var stop= { stopId:single[0],name:single[1],latitude:single[2],longitude:single[3]}
+            //output.push("<tr><td>" + lines[i].split(",").join("</td><td>") + "</td></tr>");
+            output.push(stop);
+          }
+      }
+        //  output = "<table>" + output.join("") + "</table>";
+          console.log(output);
+         $.ajax({type:'post',url:"http://localhost:3000/CSV",data:{data:output},
+                    success:()=>{alert("succeed")}
+              })
+     }
+	      r.readAsText(f);
+      //console.log(output);
+    }
+upload=(event)=>{
+    console.log(event.target.files[0])
+    this.setState({
+      selectedFile: event.target.files[0],
+    })
+    }
     render(){
         
          if (this.props.showuser==true)
@@ -1262,9 +1304,12 @@ class AdminTablerow extends React.Component{
        <button className= "btn btn-lg btn-outline-primary btn-block text-uppercase"onClick={this.props.actionupdata}>Update</button>
        <h3 className="text-info text-center">You could click Add button to add stop</h3>
        <button className= "btn btn-lg btn-outline-success btn-block text-uppercase" onClick={this.props.addstop}>Add</button>
-              <h3 className="text-info text-center">You could click Upload button to Upload stop file</h3>
-                     <button className= "btn btn-lg btn-outline-primary btn-block text-uppercase">Upload</button>
-        <table className="table table-hover">
+             <input type="file" name="file" onChange={(event)=>this.upload(event)}/>
+                     <button className= "btn btn-lg btn-outline-primary btn-block text-uppercase" onClick={this.send}>Upload</button>
+       <p className="text-info text-center">Please upload the CSV file as blow</p>
+	<p className="text-danger text-center">stopId,name,latitude,longitude</p>
+	<p className="text-danger text-center">dataOfstopId,dataOfname,dataOflatitude,dataOflongitude</p>
+<table className="table table-hover">
   <thead className="thead-light">
     <tr>
     <th scope="col"   onClick={this.props.IdSort}>StopId(click to sort by alphabet) </th>
