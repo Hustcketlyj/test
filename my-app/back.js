@@ -332,7 +332,7 @@ app.delete('/stop/:stopname', (req, res) => {
 /* admin updata an user */
 app.put('/user/:username', (req, res) => {
 	if(req.session.admin != undefined) {
-		User.update({ username: req.params.username},{username:req.body.username,paw:req.body.pwa,favourite:req.body.favourite}, (err, result) => {
+		User.update({ username: req.params.username},{username:req.body.username,pwd:req.body.pwd,favourite:req.body.favourite}, (err, result) => {
 			if(err)
 				return console.log(err);
 			
