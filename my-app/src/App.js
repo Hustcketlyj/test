@@ -739,7 +739,7 @@ ClickSearchType=(type)=>{
     }
     	actionupdata=()=>{
     
-    this.setState({actiontype:'Updata'})
+    this.setState({actiontype:'Update'})
     }
     addstop=()=>{
         var stopId=prompt("Please enter the stopid", "111111")
@@ -813,11 +813,11 @@ ClickSearchType=(type)=>{
 			
 			else
         {
-			var stopId=prompt("Please enter the stopid", "111111")
-    var name=prompt("Please enter the stopname", "someplace");
-    var latitude=prompt("Please enter the latitude", "11");
-    var longitude=prompt("Please enter the longitude", "11");
-	var route=prompt("Please enter the route", "11");
+			var stopId=prompt("Please enter the stopid", data.arrival[0].stopId)
+    var name=prompt("Please enter the stopname", data.name);
+    var latitude=prompt("Please enter the latitude", data.latitude);
+    var longitude=prompt("Please enter the longitude", data.longitude);
+	var route=prompt("Please enter the route", data.arrival[0].route);
    if (stopId!=null&&name!=null&&latitude!=null&&longitude!=null)
        {   $.ajax({type:'put', url:"http://csci2720.cse.cuhk.edu.hk/2011/stop/"+data.name,
 	   data:{stopId:stopId,name:name,latitude:latitude,longitude:longitude,route:route},
@@ -1299,7 +1299,8 @@ upload=(event)=>{
         return(
         <div className="table-responsive">
         <h1 className="text-primary text-center">Stop Information</h1>
-        <h3 className="text-info text-center">You could rightclick the stop on table to {this.props.actiontype}</h3>
+		<h3 className="text-info text-center">Click below two button to switch function</h3>
+        <h3 className="text-info text-center">Then you could rightclick the stop on table to {this.props.actiontype}</h3>
        <button className= "btn btn-lg btn-outline-danger btn-block text-uppercase" onClick={this.props.actiondelete}>Delete</button>
        <button className= "btn btn-lg btn-outline-primary btn-block text-uppercase"onClick={this.props.actionupdata}>Update</button>
        <h3 className="text-info text-center">You could click Add button to add stop</h3>
@@ -1369,7 +1370,8 @@ class UserList extends React.Component{
         return(
         <div className="table-responsive">
         <h1 className="text-primary text-center">User Information</h1>
-<h3 className="text-info text-center">You could rightclick the User on table to {this.props.actiontype}</h3>
+		<h3 className="text-info text-center">Click below two button to switch function</h3>
+<h3 className="text-info text-center">Then you could rightclick the User on table to {this.props.actiontype}</h3>
        <button className= "btn btn-lg btn-outline-danger btn-block text-uppercase" onClick={this.props.actiondelete}>Delete</button>
        <button className= "btn btn-lg btn-outline-primary btn-block text-uppercase" onClick={this.props.actionupdata}>Update</button>
        <h3 className="text-info text-center">You could click Add button to add User</h3>
