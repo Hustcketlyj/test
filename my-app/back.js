@@ -329,6 +329,34 @@ app.delete('/stop/:stopname', (req, res) => {
 		res.send({ 'authority': 0 });
 	}
 });
+/* admin updata an user */
+app.put('/user/:username', (req, res) => {
+	if(req.session.admin != undefined) {
+		User.update({ username: req.params.username},{username:req.body.username,paw:req.body.pwa,favourite:req.body.favourite}, (err, result) => {
+			if(err)
+				return console.log(err);
+			
+			else
+				res.send({ 'update': 1 });
+		})
+	} else {
+		res.send({ 'authority': 0 });
+	}
+});
+/* admin updata a bus stop */
+app.put('/stop/:stopname', (req, res) => {
+	if(req.session.admin != undefined) {
+		Stop.update({ name: req.params.stopname},{name:req.body.name,latitude:req.body.latitude,longitude:req.body.longitude,arrival:[{stopId: req.body.stopId,route:req.body.route}]}, (err, result) => {
+			if(err)
+				return console.log(err);
+			
+			else
+				res.send({ 'update': 1 });
+		})
+	} else {
+		res.send({ 'authority': 0 });
+	}
+});
 /* add location */
 app.post('/stop', (req, res) => {
 	var stop = new Stop({
