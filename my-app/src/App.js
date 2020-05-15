@@ -108,7 +108,33 @@ class Userchart extends React.Component{
       return null;
     }
   }
-}   
+}  
+class Adminchart extends React.Component{
+	render(){
+		return(<Bar data={this.props.chartadmin}
+       options={{
+         maintainAspectRatio:false,
+         scales: {
+                   yAxes: [{
+                      ticks: {
+                      beginAtZero: true,
+                       min: 0
+                     }    
+                   }]
+                 },
+          title:{
+          display:true,
+          text:"Top 5 STOPS with the most comments"
+        },
+        legend:{
+          display:"true",
+          position:"right"
+        }
+       }}
+		       />);
+		       }
+	
+}
     var alldata;
 class Project extends React.Component
 {
@@ -161,6 +187,34 @@ class Project extends React.Component
                       labels:['stop1',"stop2",'stop3','shop4','shop5'],
                       datasets:[{
                         label:"Route Number",
+                        data:[10,5,5,5,10],
+                        backgroundColor:[
+                          'rgba(255,99,132,0.2)',
+                          'rgba(54,162,235,0.2)',
+                          'rgba(255,206,86,0.2)',
+                          'rgba(75,192,192,0.2)',
+                          'rgba(153,102,255,0.2)', 
+                        ]
+                      }]
+                     },
+		chartData2:{
+                       labels:['user1',"user2",'user3','user4','user5'],
+                       datasets:[{
+                         label:"Favourite Number",
+                         data:[2,3,4,5,6],
+                         backgroundColor:[
+                           'rgba(255,99,132,0.2)',
+                           'rgba(54,162,235,0.2)',
+                           'rgba(255,206,86,0.2)',
+                           'rgba(75,192,192,0.2)',
+                           'rgba(153,102,255,0.2)', 
+                         ]
+                       }]
+                     },
+                     chartData3:{
+                      labels:['user1',"user2",'user3','user4','user5'],
+                      datasets:[{
+                        label:"Comment Number",
                         data:[10,5,5,5,10],
                         backgroundColor:[
                           'rgba(255,99,132,0.2)',
@@ -604,7 +658,52 @@ ClickSearchType=(type)=>{
     adminlog=()=>{
     this.test();
      $.ajax({type:'post',url:"http://csci2720.cse.cuhk.edu.hk/2011/adminLogIn",success:(res)=>{this.setState({admin:true}) } })
-    $.ajax({type:'GET',url:"http://csci2720.cse.cuhk.edu.hk/2011/user",success:(res)=>{this.setState({user:res}) } })
+    $.ajax({type:'GET',url:"http://csci2720.cse.cuhk.edu.hk/2011/user",success:(res)=>{this.setState({user:res});		      
+	var qp=res;
+        var compare2=function(x,y){
+		if(x.favourite.length>y.favourite.length){
+			return -1;
+		}else{
+			return 0;
+		}
+	};
+        qp=qp.sort(compare2);
+	var five=[];
+	five.push(qp[0].username);
+	five.push(qp[1].username);
+        five.push(qp[2].username);
+	five.push(qp[3].username);
+         five.push(qp[4].username);
+	var five1=[];
+	     five1.push(qp[0].favourite.length);
+	 five1.push(qp[1].favourite.length);
+	 five1.push(qp[2].favourite.length);
+	five1.push(qp[3].favourite.length);
+	 five1.push(qp[4].favourite.length);
+	this.setState({
+	chartData2:{
+		labels:five,
+		datasets:[{
+			label:"Favourite number",
+			data:five1,
+			backgroundColor:[
+            'rgba(255,99,132,0.2)',
+            'rgba(54,162,235,0.2)',
+            'rgba(255,206,86,0.2)',
+            'rgba(75,192,192,0.2)',
+            'rgba(153,102,255,0.2)', 
+          ]
+		}]
+	}
+	});
+	
+	
+	
+	
+	
+	
+	
+	} });
 
     }    
     
@@ -999,7 +1098,7 @@ else
 				</li>
     
 			</ul>        
-        
+                <div><Adminchart chartadmin={this.props.chartData2}/></div>
 	
 		<a className="nav-right" >{this.state.name} </a>&nbsp;&nbsp;&nbsp;
 		<a className="nav-right" ><SignUp Loginout={true} ClickSignUp={this.ClickSignUp}/></a>&nbsp;&nbsp;&nbsp;
