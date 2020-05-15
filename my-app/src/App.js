@@ -111,7 +111,8 @@ class Userchart extends React.Component{
 }  
 class Adminchart extends React.Component{
 	render(){
-		return(<Bar data={this.props.chartadmin}
+		return(<div>
+			<div><Bar data={this.props.chartadmin}
        options={{
          maintainAspectRatio:false,
          scales: {
@@ -131,7 +132,32 @@ class Adminchart extends React.Component{
           position:"right"
         }
        }}
-		       />);
+		       /></div>
+	<div><Bar data={this.props.chartadmin2}
+       options={{
+         maintainAspectRatio:false,
+         scales: {
+                   yAxes: [{
+                      ticks: {
+                      beginAtZero: true,
+                       min: 0
+                     }    
+                   }]
+                 },
+          title:{
+          display:true,
+          text:"Top 5 USERS with the most comments"
+        },
+        legend:{
+          display:"true",
+          position:"right"
+        }
+       }}
+		       /></div>	       
+		       
+		       </div>);
+		       
+		       
 		       }
 	
 }
@@ -701,15 +727,64 @@ ClickSearchType=(type)=>{
 		}]
 	}
 	});
-	
-	
-	
-	
+	var commentnum=[];
+	for(let i in res){
+		commentnum.push({name:res[i].username,num:0};
+			}
+	for(let i in this.state.data){
+			if(this.state.data[i].comment.length!==0){
+				for(let j in this.state.data[i].comment){
+					for(let k in commentnum){
+						if(comment[k].name===this.state.data[i].comment[j].username){
+							comment[k].num++;
+						}
+						break;
+					}
+				}
+			}
+		}
+	var compare3=function(x,y){
+		if(x.num>y.num){
+			return -1;
+		}else{
+			return 0;
+		}
+	};
+	commentnum=commentnum.sort(compare3);
+	var fivecom=[];
+	fivecom.push(commentnum[0].name);
+	fivecom.push(commentnum[1].name);
+        fivecom.push(commentnum[2].name);
+	fivecom.push(commentnum[3].name);
+         fivecom.push(commentnum[4].name);
+	var fivecom1=[];
+	     fivecom1.push(commentnum[0].num);
+	 fivecom1.push(commentnum[1].num);
+	 fivecom1.push(commentnum[2].num);
+	fivecom1.push(commentnum[3].num);
+	 fivecom1.push(commentnum[4].num);
+	this.setState({
+	chartData3:{
+		labels:fivecom,
+		datasets:[{
+			label:"Comment number",
+			data:fivecom1,
+			backgroundColor:[
+            'rgba(255,99,132,0.2)',
+            'rgba(54,162,235,0.2)',
+            'rgba(255,206,86,0.2)',
+            'rgba(75,192,192,0.2)',
+            'rgba(153,102,255,0.2)', 
+          ]
+		}]
+	}
+	});
 	
 	
 	
 	} });
 	    }
+	    
     }    
     
     addUser=()=>{
@@ -1142,7 +1217,7 @@ else
 		<a className="nav-right" ><SignUp Loginout={true} ClickSignUp={this.ClickSignUp}/></a>&nbsp;&nbsp;&nbsp;
 		<a className="nav-right" ><LogInOut Loginout={true} toggleform={this.toggleform} Logout={this.adminLogout}/></a>
 		</nav>
-		 <div><Adminchart chartadmin={this.state.chartData2}/></div>
+		 <div><Adminchart chartadmin={this.state.chartData2} charadmin2={this.state.charDate3}/></div>
         <AdminStopInfo actiontype={this.state.actiontype} actionupdata={this.actionupdata} onContextMenu={this.adminRightClick}actiondelete={this.actiondelete}addstop={this.addstop}showuser={this.state.showuser} Serchtype={this.state.Searchtype} data={this.state.filteredDatas} IdSort={this.IdSort} RouteSort={this.RouteSort} NameSort={this.NameSort} LatitudeSort={this.LatitudeSort} LongitudeSort={this.LongitudeSort}/>
         
         <UserList  actiontype={this.state.actiontype}actionupdata={this.actionupdata} onContextMenu={this.adminRightClick}actiondelete={this.actiondelete}addUser={this.addUser}showuser={this.state.showuser} user={this.state.user}/>
@@ -1249,49 +1324,7 @@ class AdminTablerow extends React.Component{
     }
     //admin的stop table
  class AdminStopInfo extends React.Component{
-                    constructor(props){
-                super(props);
-                this.state={
-                  selectedFile:null                      
-                      
-        }
-    }
-send=()=>{
-   var data = new FormData() ;
-    data.append('file', this.state.selectedFile);
-    console.log(data);
-   // $.ajax({type:'post', data:data,url:"http://localhost:3000/CSV",success:()=>{alert("succeed")}})
-   var f=this.state.selectedFile
-var r = new FileReader();
-      r.onload = function(e) { 
-          var contents = e.target.result;
-         // document.write("File Uploaded! <br />" + "name: " + f.name + "<br />" + "content: " + contents + "<br />" + "type: " + f.type + "<br />" + "size: " + f.size + " bytes <br />");
-
-          var lines = contents.split("\n");
-         var  output = [];
-          for (var i=1; i<lines.length; i++){
-       {  
-           var single= lines[i].split(",");
-         var stop= { stopId:single[0],name:single[1],latitude:single[2],longitude:single[3]}
-            //output.push("<tr><td>" + lines[i].split(",").join("</td><td>") + "</td></tr>");
-            output.push(stop);
-          }
-      }
-        //  output = "<table>" + output.join("") + "</table>";
-          console.log(output);
-         $.ajax({type:'post',url:"http://localhost:3000/CSV",data:{data:output},
-                    success:()=>{alert("succeed")}
-              })
-     }
-	      r.readAsText(f);
-      //console.log(output);
-    }
-upload=(event)=>{
-    console.log(event.target.files[0])
-    this.setState({
-      selectedFile: event.target.files[0],
-    })
-    }
+    
     render(){
         
          if (this.props.showuser==true)
@@ -1304,12 +1337,9 @@ upload=(event)=>{
        <button className= "btn btn-lg btn-outline-primary btn-block text-uppercase"onClick={this.props.actionupdata}>Update</button>
        <h3 className="text-info text-center">You could click Add button to add stop</h3>
        <button className= "btn btn-lg btn-outline-success btn-block text-uppercase" onClick={this.props.addstop}>Add</button>
-             <input type="file" name="file" onChange={(event)=>this.upload(event)}/>
-                     <button className= "btn btn-lg btn-outline-primary btn-block text-uppercase" onClick={this.send}>Upload</button>
-       <p className="text-info text-center">Please upload the CSV file as blow</p>
-	<p className="text-danger text-center">stopId,name,latitude,longitude</p>
-	<p className="text-danger text-center">dataOfstopId,dataOfname,dataOflatitude,dataOflongitude</p>
-<table className="table table-hover">
+              <h3 className="text-info text-center">You could click Upload button to Upload stop file</h3>
+                     <button className= "btn btn-lg btn-outline-primary btn-block text-uppercase">Upload</button>
+        <table className="table table-hover">
   <thead className="thead-light">
     <tr>
     <th scope="col"   onClick={this.props.IdSort}>StopId(click to sort by alphabet) </th>
